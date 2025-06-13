@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso de Google Apps Script: De Básico a Automatización</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Chosen Palette: "Warm Neutrals & Calm Blue" - A combination of slate grays for a neutral, professional base, with a calming blue for interactive elements and accents, and amber for alerts or highlights. -->
+    <!-- Application Structure Plan: The SPA is structured as a comprehensive, single-page educational resource. It uses a sticky top navigation bar that allows direct jumps to major modules (Básico, Avanzado, Proyectos) and individual lessons/projects within them. This linear, scrollable structure with anchor links was chosen for its simplicity and ease of deployment as a standalone HTML file, directly supporting the user's goal of a "sitio web dedicado a estudiar" without complex interactivity. It prioritizes content consumption and quick reference over dynamic exploration. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: All textual explanations, code snippets, and conceptual diagrams from the original lessons. Goal: Inform, Explain, Demonstrate. Method: Formatted text (paragraphs, lists, headings), static code blocks, and simple HTML/CSS diagrams. Interaction: Scroll-to-section navigation, copy-to-clipboard for code. Justification: For a study-focused site, clear presentation and easy code access are paramount. No complex interactive visualizations (charts/Plotly) are needed as the goal is a static reference, not data exploration.
+        - The original lesson's "interactive" sections (e.g., the greeting and product search examples) have been adapted. Their functional descriptions and the relevant Apps Script code remain, but the client-side HTML/JS simulation elements have been removed, aligning with the "no interactivity" requirement for a study site.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Fondo claro y suave */
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap');
+        .font-fira-code {
+            font-family: 'Fira Code', monospace;
+        }
+        .code-block {
+            position: relative;
+        }
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            background-color: #4a5568; /* slate-700 */
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1; /* Adjust line height for icon/text alignment */
+        }
+        .code-block:hover .copy-button {
+            opacity: 1;
+        }
+        .copy-button:active {
+            background-color: #2d3748; /* slate-800 */
+        }
+        .section-header {
+            border-bottom: 4px solid #3b82f6; /* blue-500 */
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .subsection-header {
+            border-bottom: 2px solid #93c5fd; /* blue-200 */
+            padding-bottom: 0.25rem;
+            margin-bottom: 1rem;
+        }
+        .card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+        .code-pre {
+          background-color: #1e293b; /* slate-900 */
+          color: white;
+          padding: 1rem;
+          border-radius: 0.5rem;
+          overflow-x: auto;
+          font-size: 0.875rem; /* text-sm */
+          line-height: 1.5;
+        }
+        .code-pre code {
+            font-family: 'Fira Code', monospace;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Sticky Header & Navigation -->
+    <header class="w-full bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center">
+            <h1 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2 md:mb-0">Curso de Google Apps Script</h1>
+            <nav>
+                <ul class="flex flex-wrap justify-center md:space-x-6 text-sm md:text-base font-medium text-slate-600">
+                    <li><a href="#modulo-1" class="hover:text-blue-600 transition-colors p-2 rounded-md">Módulo Básico</a></li>
+                    <li><a href="#modulo-2" class="hover:text-blue-600 transition-colors p-2 rounded-md">Módulo Avanzado</a></li>
+                    <li><a href="#modulo-3" class="hover:text-blue-600 transition-colors p-2 rounded-md">Proyectos Reales</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8 pt-8">
+
+        <!-- MÓDULO 1: BÁSICO -->
+        <section id="modulo-1" class="mb-20 scroll-mt-24">
+            <h2 class="text-4xl font-extrabold text-slate-900 section-header">Módulo 1: Básico - Primeros Pasos en la Automatización</h2>
+            <p class="text-xl leading-relaxed mb-8 text-slate-700">
+                Este módulo te familiarizará con el entorno de Google Apps Script y te enseñará a interactuar fluidamente con Google Sheets para automatizar tareas repetitivas.
+            </p>
+
+            <!-- Lección 1.1: Introducción a Google Apps Script -->
+            <div class="card" id="leccion-1-1">
+                <h3 class="text-2xl font-bold text-slate-900 subsection-header">Lección 1.1: Introducción a Google Apps Script</h3>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">1. ¿Qué es Google Apps Script y por qué es una herramienta poderosa?</h4>
+                <p class="mb-4">Imagina tener un "robot" personal dentro de tu cuenta de Google, capaz de automatizar tareas aburridas y repetitivas, crear funcionalidades personalizadas que no existen de forma nativa, o incluso construir aplicaciones web completas. Eso es precisamente lo que te permite hacer <strong>Google Apps Script</strong>.</p>
+                <p class="mb-4"><strong>Google Apps Script (GAS)</strong> es un lenguaje de programación basado en JavaScript que corre en la nube de Google. Esto significa que no necesitas instalar ningún software especial en tu computadora; todo sucede directamente en tu navegador y en los servidores de Google. Es como el pegamento que une todas las aplicaciones de Google Workspace (Hojas de cálculo, Documentos, Gmail, Calendar, Drive, etc.) y les permite hablar entre sí y hacer cosas asombrosas que no podrían hacer por separado.</p>
+                <p class="font-bold mt-4 mb-2">¿Por qué es tan poderoso?</p>
+                <ul class="list-disc list-inside mb-4 pl-4">
+                    <li><strong>Automatización:</strong> Es el rey de la automatización.</li>
+                    <li><strong>Personalización:</strong> Crea funciones personalizadas en Google Sheets.</li>
+                    <li><strong>Integración:</strong> Conecta tus herramientas de Google entre sí.</li>
+                    <li><strong>Aplicaciones Web:</strong> Si quieres ir más allá, puedes incluso crear aplicaciones web sencillas.</li>
+                    <li><strong>Bajo Umbral de Entrada:</strong> Si ya tienes conocimientos básicos de programación (especialmente JavaScript), te sentirás muy cómodo.</li>
+                </ul>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">2. Explorando el Entorno de Desarrollo (IDE) de Apps Script</h4>
+                <p class="mb-4">Para empezar a programar con Apps Script, necesitamos acceder a su <strong>Entorno de Desarrollo Integrado (IDE)</strong>.</p>
+                <p class="font-bold mb-2">Método más común (desde Google Sheets, Docs, o Slides):</p>
+                <ol class="list-decimal list-inside mb-4 pl-4">
+                    <li>Abre una nueva Hoja de cálculo de Google.</li>
+                    <li>Ve al menú superior y selecciona <strong>Extensiones &gt; Apps Script</strong>.</li>
+                </ol>
+                <p class="text-sm italic text-slate-600 mb-4">[Visualización: Captura de pantalla del menú de Google Sheets mostrando Extensiones &gt; Apps Script]</p>
+                <p class="font-bold mb-2">Componentes clave del IDE:</p>
+                <p class="text-sm italic text-slate-600 mb-4">[Visualización: Captura de pantalla del IDE de Google Apps Script destacando explorador de archivos, editor de código, barra de herramientas, etc.]</p>
+                <ul class="list-disc list-inside mb-4 pl-4">
+                    <li><strong>Menú Principal:</strong> Archivo, Edición, Ver, Ejecuciones, Activadores (Triggers), Propiedades del Proyecto, Servicios.</li>
+                    <li><strong>Barra de Herramientas:</strong> Guardar, Ejecutar, Depurar, Selección de Función.</li>
+                    <li><strong>Explorador de Archivos:</strong> Lista de archivos `.gs` y `.html`.</li>
+                    <li><strong>Editor de Código:</strong> Donde escribirás tu código JavaScript.</li>
+                    <li><strong>Ventana de Registro (Logger):</strong> Para ver la salida de `Logger.log()`.</li>
+                </ul>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">3. Tu primer script: Un "Hola Mundo" en Apps Script</h4>
+                <p class="mb-4">Vamos a escribir nuestro primer script.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function myFunction() {
+  Logger.log("¡Hola Mundo desde Google Apps Script!");
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="mb-4 mt-4"><strong>Primera ejecución: Solicitud de permisos</strong>. Google te pedirá que revises y autorices los permisos. Haz clic en "Revisar permisos", selecciona tu cuenta de Google y luego "Permitir".</p>
+                <p class="font-bold mt-4 mb-2">Ver el resultado:</p>
+                <ol class="list-decimal list-inside mb-4 pl-4">
+                    <li>Ve a la sección <strong>Ejecuciones</strong> en el panel izquierdo de tu IDE.</li>
+                    <li>Haz clic en la ejecución más reciente para ver la salida del `Logger.log()`.</li>
+                </ol>
+                <p class="font-bold mt-4 mb-2">Ejercicio Práctico:</p>
+                <ul class="list-disc list-inside mb-4 pl-4">
+                    <li>Modifica `myFunction` para que imprima tu nombre.</li>
+                    <li>Crea una nueva función `saludarUsuario` que tome un nombre como parámetro y salude a esa persona.</li>
+                </ul>
+            </div>
+
+            <!-- Lección 1.2: Repaso de Conceptos Básicos de Programación en JavaScript para Apps Script -->
+            <div class="card" id="leccion-1-2">
+                <h3 class="text-2xl font-bold text-slate-900 subsection-header">Lección 1.2: Repaso de Conceptos Básicos de Programación en JavaScript para Apps Script</h3>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">1. Variables y Tipos de Datos</h4>
+                <p class="mb-4">Las <strong>variables</strong> son como "contenedores" para almacenar información. Cada información tiene un <strong>tipo de dato</strong> específico.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function trabajarConVariables() {
+  let nombreProducto = "Reporte Mensual"; // String
+  let cantidadVendida = 1500; // Number
+  let estaActivo = true; // Boolean
+  let listaTareas = ["Limpiar datos", "Generar informe"]; // Array
+  let empleado = { nombre: "Juan Pérez", puesto: "Analista" }; // Object
+
+  Logger.log("Nombre: " + nombreProducto);
+  Logger.log("Tareas: " + listaTareas[0]);
+  Logger.log("Empleado: " + empleado.nombre);
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">2. Operadores</h4>
+                <p class="mb-4">Símbolos que nos permiten realizar operaciones (aritméticos, de asignación, de comparación, lógicos).</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function usarOperadores() {
+  let a = 10, b = 5;
+  Logger.log("Suma: " + (a + b)); // Aritmético
+  Logger.log("¿a es mayor que b?: " + (a > b)); // Comparación
+  let tienePermiso = true, esAdmin = false;
+  Logger.log("¿Permiso Y Admin?: " + (tienePermiso && esAdmin)); // Lógico
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">3. Estructuras de Control: Condicionales y Bucles</h4>
+                <p class="mb-4">Permiten tomar decisiones (`if/else`, `switch`) y repetir acciones (`for`, `forEach`, `while`).</p>
+                <p class="font-bold mb-2">Condicionales:</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function verificarEstado(estado) {
+  if (estado === "Activo") { Logger.log("Activo"); }
+  else if (estado === "Pendiente") { Logger.log("Pendiente"); }
+  else { Logger.log("Desconocido"); }
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="font-bold mb-2">Bucles:</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function procesarNombres(nombres) {
+  for (let i = 0; i < nombres.length; i++) { Logger.log(nombres[i]); }
+  nombres.forEach(nombre => Logger.log(nombre));
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">4. Funciones: Declaración, Invocación, Parámetros y Valores de Retorno</h4>
+                <p class="mb-4">Bloques de código reutilizables para tareas específicas.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function calcularAreaRectangulo(largo, ancho) {
+  return largo * ancho;
+}
+let area = calcularAreaRectangulo(5, 8);
+Logger.log("Área: " + area);</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="font-bold mt-4 mb-2">Ejercicio Práctico: Generar Informe de Ventas.</p>
+                <p class="mb-4">Crea una función `generarInformeDeVentas` que acepte un array de objetos `{ nombre, precio }`, calcule el total y muestre un mensaje condicional sobre las ventas.</p>
+            </div>
+
+            <!-- Lección 1.3: Estructuras de Datos y Métodos Fundamentales -->
+            <div class="card" id="leccion-1-3">
+                <h3 class="text-2xl font-bold text-slate-900 subsection-header">Lección 1.3: Estructuras de Datos y Métodos Fundamentales</h3>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">1. Arrays (Arreglos o Listas)</h4>
+                <p class="mb-4">Lista ordenada de valores. Métodos comunes como `push()`, `pop()`, `map()`, `filter()`, `reduce()`.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function trabajarConArrays() {
+  let frutas = ["Manzana", "Pera"];
+  frutas.push("Naranja"); // Añadir al final
+  Logger.log("Frutas: " + frutas.join(", "));
+
+  let precios = [10, 20, 30];
+  let preciosConImpuesto = precios.map(p => p * 1.16);
+  Logger.log("Precios con impuesto: " + preciosConImpuesto.join(", "));
+
+  let edades = [18, 15, 22];
+  let mayoresDeEdad = edades.filter(edad => edad >= 18);
+  Logger.log("Mayores de edad: " + mayoresDeEdad.join(", "));
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">2. Objetos (Object Literals)</h4>
+                <p class="mb-4">Colecciones de pares clave-valor. Ideal para representar entidades.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function trabajarConObjetos() {
+  let libro = { titulo: "1984", autor: "George Orwell" };
+  Logger.log("Título: " + libro.titulo);
+  libro.anio = 1949; // Añadir propiedad
+  Logger.log("Año: " + libro.anio);
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">3. Set (Conjuntos)</h4>
+                <p class="mb-4">Colección de valores únicos.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function trabajarConSet() {
+  let numerosUnicos = new Set();
+  numerosUnicos.add(10);
+  numerosUnicos.add(20);
+  numerosUnicos.add(10); // Ignorado
+  Logger.log("Tamaño Set: " + numerosUnicos.size); // 2
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">4. Map (Mapas)</h4>
+                <p class="mb-4">Colección de pares clave-valor, donde las claves pueden ser de cualquier tipo.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function trabajarConMap() {
+  let configuracion = new Map();
+  configuracion.set("tema", "oscuro");
+  configuracion.set(123, "ID de usuario");
+  Logger.log("Tema: " + configuracion.get("tema"));
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="font-bold mt-4 mb-2">Ejercicio Práctico: Gestión de Inventario Simple.</p>
+                <p class="mb-4">Crea un script para gestionar un array de objetos producto, incluyendo agregar, actualizar y eliminar productos, y calcular el valor total del inventario.</p>
+            </div>
+
+            <!-- Lección 1.4: Interacción Fundamental con Google Sheets -->
+            <div class="card" id="leccion-1-4">
+                <h3 class="text-2xl font-bold text-slate-900 subsection-header">Lección 1.4: Interacción Fundamental con Google Sheets</h3>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">1. Accediendo a la Hoja de Cálculo Activa y Hojas Específicas</h4>
+                <p class="mb-4">Usa `SpreadsheetApp` para obtener hojas de cálculo y `getSheetByName()` o `getActiveSheet()` para hojas específicas.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function obtenerHoja() {
+  let hojaActiva = SpreadsheetApp.getActiveSpreadsheet();
+  Logger.log("Nombre de la hoja de cálculo: " + hojaActiva.getName());
+  let hojaDatos = hojaActiva.getSheetByName("Datos");
+  if (hojaDatos) Logger.log("Hoja 'Datos' encontrada.");
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">2. Seleccionando Rangos y Celdas</h4>
+                <p class="mb-4">Usa `getRange()` con coordenadas o notación A1.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function seleccionarRangos() {
+  let hoja = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  let celdaA1 = hoja.getRange(1, 1);
+  let rangoB2C5 = hoja.getRange("B2:C5");
+  Logger.log("Rango A1: " + celdaA1.getA1Notation());
+  Logger.log("Rango B2:C5: " + rangoB2C5.getA1Notation());
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">3. Lectura y Escritura de Datos</h4>
+                <p class="mb-4">Usa `getValue()`, `setValue()`, `getValues()`, `setValues()`.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function leerYEscribirDatos() {
+  let hoja = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  hoja.getRange("A1").setValue("Hola");
+  let valor = hoja.getRange("A1").getValue();
+  Logger.log("Valor de A1: " + valor);
+
+  let datosTabla = [["Producto", "Cantidad"], ["Lapiz", 10], ["Borrador", 5]];
+  hoja.getRange(1, 1, 3, 2).setValues(datosTabla);
+  let todosLosValores = hoja.getRange(1, 1, 3, 2).getValues();
+  Logger.log("Todos los valores: " + JSON.stringify(todosLosValores));
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">4. Manipulación de Filas y Columnas</h4>
+                <p class="mb-4">Usa `appendRow()`, `insertRowBefore()`, `deleteRow()`, etc.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function manipularFilasYColumnas() {
+  let hoja = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  hoja.appendRow(["Nueva Fila", 123]);
+  hoja.insertRowBefore(2); // Inserta una fila vacía antes de la fila 2
+  hoja.deleteRow(3); // Elimina la fila 3
+  Logger.log("Manipulaciones de filas realizadas.");
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="font-bold mt-4 mb-2">Ejercicio Práctico: Registro de Asistencia.</p>
+                <p class="mb-4">Crea un script para registrar la asistencia en una hoja "Asistencia", añadiendo la fecha, hora, nombre y estado en una nueva fila.</p>
+            </div>
+
+            <!-- Lección 1.5: Navegando la Documentación de Google Apps Script -->
+            <div class="card" id="leccion-1-5">
+                <h3 class="text-2xl font-bold text-slate-900 subsection-header">Lección 1.5: Navegando la Documentación de Google Apps Script</h3>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">1. ¿Por qué es crucial la documentación?</h4>
+                <p class="mb-4">Es tu fuente de verdad, te da autonomía, te ayuda a descubrir funcionalidades y a resolver errores.</p>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">2. ¿Dónde encontrar la documentación?</h4>
+                <p class="mb-4">En [developers.google.com/apps-script/reference/](https://developers.google.com/apps-script/reference/).</p>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">3. Estructura de la Documentación (El "Mapa" de la API)</h4>
+                <ul class="list-disc list-inside mb-4 pl-4">
+                    <li><strong>Panel de Navegación Izquierdo:</strong> Servicios principales, servicios avanzados.</li>
+                    <li><strong>Lista de Clases:</strong> Como `SpreadsheetApp`, `Sheet`, `Range`.</li>
+                    <li><strong>Detalle de la Clase/Interfaz:</strong> Descripción, métodos, parámetros, valores de retorno.</li>
+                </ul>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">4. Ejemplo Práctico: Explorando `SpreadsheetApp`</h4>
+                <p class="mb-4">El flujo de exploración es: `SpreadsheetApp` &rarr; `Spreadsheet` &rarr; `Sheet` &rarr; `Range` &rarr; métodos de lectura/escritura.</p>
+                <p class="font-bold mt-4 mb-2">Ejercicio Práctico: Investiga `DriveApp`.</p>
+                <p class="mb-4">En la documentación, encuentra cómo crear una nueva carpeta y cómo listar archivos en tu Drive. Luego, escribe un script para probarlo.</p>
+            </div>
+
+            <!-- Lección 1.6: Depuración y Solución de Problemas -->
+            <div class="card" id="leccion-1-6">
+                <h3 class="text-2xl font-bold text-slate-900 subsection-header">Lección 1.6: Depuración y Solución de Problemas</h3>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">1. Uso del `Logger.log()`: Tu Consola de Impresión</h4>
+                <p class="mb-4">Imprime mensajes y valores de variables en el historial de ejecuciones.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function calcularYLoggear() {
+  let x = 10;
+  Logger.log("Valor de x: " + x);
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">2. Historial de Ejecuciones: El Registro Completo</h4>
+                <p class="mb-4">En el IDE, ve a "Ejecuciones" para ver el estado, logs y mensajes de error de tu script.</p>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">3. El Depurador (Debugger): Control Paso a Paso</h4>
+                <p class="mb-4">Permite ejecutar el script línea por línea. Pon un **punto de interrupción** (círculo rojo al lado del número de línea) y haz clic en el icono de "bicho" (bug) en la barra de herramientas.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function depurarMiFuncion() {
+  let datos = [10, 20]; // &lt;-- Pon un breakpoint aquí
+  let factor = 2;
+  let resultados = [];
+  for (let i = 0; i < datos.length; i++) {
+    resultados.push(datos[i] * factor);
+  }
+  Logger.log("Resultados: " + resultados);
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">4. Cuotas y Limitaciones de Apps Script</h4>
+                <p class="mb-4">Límites diarios de ejecución y uso de servicios. Optimiza usando `getValues()`/`setValues()` para operaciones masivas.</p>
+                <p class="font-bold mt-4 mb-2">Ejercicio Práctico: Depuración de un Script con Errores.</p>
+                <p class="mb-4">Analiza un script provisto que tiene un error de bucle, usa `Logger.log()` y el depurador para encontrar y corregir el problema.</p>
+            </div>
+        </section>
+
+        <!-- MÓDULO 2: AVANZADO -->
+        <section id="modulo-2" class="mb-20 scroll-mt-24">
+            <h2 class="text-4xl font-extrabold text-slate-900 section-header">Módulo 2: Avanzado - Construyendo Aplicaciones Interconectadas</h2>
+            <p class="text-xl leading-relaxed mb-8 text-slate-700">
+                En este módulo, irás más allá de Google Sheets y aprenderás a construir aplicaciones completas que interactúan con múltiples servicios de Google Workspace y más allá.
+            </p>
+
+            <!-- Lección 2.1: Servicios Esenciales de Google Workspace -->
+            <div class="card" id="leccion-2-1">
+                <h3 class="text-2xl font-bold text-slate-900 subsection-header">Lección 2.1: Servicios Esenciales de Google Workspace</h3>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">1. `GmailApp`: Automatizando el Correo Electrónico</h4>
+                <p class="mb-4">Envía correos personalizados, con HTML y adjuntos.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function enviarCorreoAppsScript() {
+  let destinatario = "tu_correo@ejemplo.com";
+  let asunto = "Saludos desde Apps Script";
+  let cuerpo = "Hola, este es un correo de prueba.";
+  GmailApp.sendEmail(destinatario, asunto, cuerpo);
+  Logger.log("Correo enviado.");
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">2. `DriveApp`: Gestión de Archivos y Carpetas</h4>
+                <p class="mb-4">Crea, busca, mueve y elimina archivos y carpetas en Google Drive.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function crearCarpetaDrive() {
+  let carpeta = DriveApp.createFolder("Mi Nueva Carpeta");
+  Logger.log("Carpeta creada: " + carpeta.getName());
+  let archivo = carpeta.createFile("MiArchivo.txt", "Contenido del archivo.");
+  Logger.log("Archivo creado: " + archivo.getName());
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">3. `CalendarApp`: Gestión de Eventos del Calendario</h4>
+                <p class="mb-4">Crea y gestiona eventos en tus Google Calendars.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function crearEventoCalendario() {
+  let calendario = CalendarApp.getDefaultCalendar();
+  let titulo = "Reunión de Equipo";
+  let inicio = new Date();
+  let fin = new Date(inicio.getTime() + 60 * 60 * 1000); // 1 hora después
+  calendario.createEvent(titulo, inicio, fin);
+  Logger.log("Evento creado.");
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">4. `DocumentApp` y `FormsApp`: Interacción Programática Básica</h4>
+                <p class="mb-4">Crea documentos y formularios. `FormsApp` también permite acceder a respuestas.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function crearGoogleDocYForm() {
+  let doc = DocumentApp.create("Nuevo Documento Apps Script");
+  doc.getBody().appendParagraph("Contenido inicial.");
+  Logger.log("Doc creado: " + doc.getName());
+
+  let form = FormsApp.create("Nueva Encuesta Apps Script");
+  form.addTextItem().setTitle("Tu nombre?");
+  Logger.log("Formulario creado: " + form.getTitle());
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">5. `PropertiesService`: Almacenamiento Persistente de Propiedades</h4>
+                <p class="mb-4">Almacena pares clave-valor de forma segura y persistente.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function manejarPropiedadesDelScript() {
+  let props = PropertiesService.getScriptProperties();
+  props.setProperty("ultimaEjecucion", new Date().toISOString());
+  let ultima = props.getProperty("ultimaEjecucion");
+  Logger.log("Última ejecución: " + ultima);
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="font-bold mt-4 mb-2">Ejercicio Práctico: Resumen Diario de Actividad de Drive y Envío por Correo.</p>
+                <p class="mb-4">Crea un script que liste los archivos modificados hoy en tu Drive y te envíe un resumen por correo.</p>
+            </div>
+
+            <!-- Lección 2.2: Manejo de Eventos y Activadores (Triggers) -->
+            <div class="card" id="leccion-2-2">
+                <h3 class="text-2xl font-bold text-slate-900 subsection-header">Lección 2.2: Manejo de Eventos y Activadores (Triggers)</h3>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">1. Activadores Simples (Simple Triggers)</h4>
+                <p class="mb-4">Funciones con nombres predefinidos (`onOpen()`, `onEdit(e)`, `onFormSubmit(e)`) que se ejecutan automáticamente por eventos.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function onOpen() {
+  SpreadsheetApp.getUi().alert("¡Hoja Abierta!");
+}
+function onEdit(e) {
+  Logger.log("Celda editada: " + e.range.getA1Notation());
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">2. Activadores Instalables (Installable Triggers)</h4>
+                <p class="mb-4">Más robustos, con permisos completos, se configuran en el IDE o programáticamente (`ScriptApp.newTrigger()`). Ideales para tareas programadas o que necesitan servicios avanzados.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function miFuncionDiaria() {
+  Logger.log("Ejecución programada: " + new Date());
+}
+
+function crearActivadorDiario() {
+  ScriptApp.newTrigger('miFuncionDiaria')
+      .timeBased()
+      .atHour(8)
+      .everyDays(1)
+      .create();
+  Logger.log("Activador creado.");
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">3. El Objeto de Evento (`e`): Información Detallada</h4>
+                <p class="mb-4">Contiene información sobre el evento que disparó el script (ej. `e.range`, `e.value`, `e.namedValues`).</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function procesarEdicionAvanzada(e) {
+  let rango = e.range;
+  let valorNuevo = e.value;
+  Logger.log(`Edición en ${rango.getA1Notation()}, nuevo valor: ${valorNuevo}`);
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="font-bold mt-4 mb-2">Ejercicio Práctico: Sistema de Notificación de Stock Bajo.</p>
+                <p class="mb-4">Configura un script que envíe una notificación por correo cuando el stock de un producto en tu hoja esté por debajo de un umbral, usando un trigger `onEdit` instalable.</p>
+            </div>
+
+            <!-- Lección 2.3: Integración con APIs Externas usando UrlFetchApp -->
+            <div class="card" id="leccion-2-3">
+                <h3 class="text-2xl font-bold text-slate-900 subsection-header">Lección 2.3: Integración con APIs Externas usando UrlFetchApp</h3>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">1. Fundamentos de las APIs RESTful</h4>
+                <p class="mb-4">Conceptos clave: Recursos, Verbos HTTP (GET, POST), JSON, Parámetros de consulta, Encabezados.</p>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">2. Realizando Peticiones HTTP con `UrlFetchApp.fetch()`</h4>
+                <p class="mb-4">Tu herramienta principal para hacer solicitudes HTTP/HTTPS. Puedes usar `method`, `contentType`, `payload`, `headers` y `muteHttpExceptions` en las opciones.</p>
+                <p class="font-bold mb-2">Ejemplo: Petición GET</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function obtenerDatosDelClima() {
+  let url = "https://api.open-meteo.com/v1/forecast?latitude=34.05&longitude=-118.24&current_weather=true";
+  try {
+    let response = UrlFetchApp.fetch(url);
+    let datosClima = JSON.parse(response.getContentText());
+    Logger.log("Temperatura actual: " + datosClima.current_weather.temperature + " °C");
+  } catch (e) {
+    Logger.log("Error: " + e.message);
+  }
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="font-bold mb-2">Ejemplo: Petición POST</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function enviarDatosAPI() {
+  let url = "https://postman-echo.com/post";
+  let datos = { nombre: "Test", valor: 100 };
+  let opciones = {
+    method: 'post',
+    contentType: 'application/json',
+    payload: JSON.stringify(datos),
+    muteHttpExceptions: true
+  };
+  try {
+    let response = UrlFetchApp.fetch(url, opciones);
+    Logger.log("Respuesta POST: " + response.getContentText());
+  } catch (e) {
+    Logger.log("Error: " + e.message);
+  }
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">3. Manejo de Respuestas JSON y XML</h4>
+                <p class="mb-4">Usa `JSON.parse()` para convertir JSON de string a objeto y `JSON.stringify()` de objeto a string. `XmlService` para XML.</p>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">4. Manejo de Errores y `muteHttpExceptions`</h4>
+                <p class="mb-4">Usa `try...catch` y `muteHttpExceptions: true` para controlar las respuestas de error HTTP.</p>
+                <p class="font-bold mt-4 mb-2">Ejercicio Práctico: Obtener Tasas de Cambio y Actualizar en Google Sheets.</p>
+                <p class="mb-4">Crea un script que obtenga tasas de cambio de una API externa y actualice una tabla en tu Google Sheet.</p>
+            </div>
+
+            <!-- Lección 2.4: Creación de Interfaces de Usuario con HTML Service -->
+            <div class="card" id="leccion-2-4">
+                <h3 class="text-2xl font-bold text-slate-900 subsection-header">Lección 2.4: Creación de Interfaces de Usuario con HTML Service</h3>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">1. Conceptos Básicos de HTML, CSS y JavaScript en Apps Script</h4>
+                <p class="mb-4">Crea archivos `.html` en tu proyecto. Incluye `<base target="_top">` en el `&lt;head&gt;`.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;base target="_top"&gt;
+  &lt;style&gt;body { font-family: sans-serif; }&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Mi Interfaz&lt;/h2&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">2. Mostrando la Interfaz: Diálogos y Barras Laterales</h4>
+                <p class="mb-4">Usa `HtmlService.createHtmlOutputFromFile()` y `SpreadsheetApp.getUi().showModalDialog()` o `showSidebar()`.</p>
+                <p class="font-bold mb-2">Ejemplo: Mostrar Diálogo</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function mostrarDialogoPersonalizado() {
+  let html = HtmlService.createHtmlOutputFromFile('miPagina').setWidth(400).setHeight(300);
+  SpreadsheetApp.getUi().showModalDialog(html, 'Título');
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">3. Comunicación entre el Lado del Cliente (HTML) y el Lado del Servidor (Apps Script)</h4>
+                <p class="mb-4">Usa `google.script.run` para llamadas asíncronas a funciones del servidor, con `.withSuccessHandler()` y `.withFailureHandler()`.</p>
+                 <div class="bg-blue-50 p-6 rounded-lg shadow-inner mb-8">
+                    <h3 class="text-xl font-semibold mb-4 text-blue-800">Flujo de Comunicación Visualizado</h3>
+                    <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4 text-center">
+                        <div class="p-4 bg-blue-100 rounded-lg w-full md:w-1/4">
+                            <div class="text-2xl mb-2">🖥️</div>
+                            <h4 class="font-bold">Cliente (HTML)</h4>
+                            <p class="text-sm">El usuario interactúa (ej. hace clic en un botón).</p>
+                        </div>
+                        <div class="font-bold text-2xl text-slate-400 transform md:rotate-0 rotate-90">&rarr;</div>
+                        <div class="p-4 bg-slate-200 rounded-lg w-full md:w-2/4">
+                            <h4 class="font-bold font-fira-code">google.script.run</h4>
+                            <p class="text-sm">Llama a la función del servidor de forma asíncrona.</p>
+                        </div>
+                        <div class="font-bold text-2xl text-slate-400 transform md:rotate-0 rotate-90">&rarr;</div>
+                         <div class="p-4 bg-green-100 rounded-lg w-full md:w-1/4">
+                            <div class="text-2xl mb-2">☁️</div>
+                            <h4 class="font-bold">Servidor (.gs)</h4>
+                            <p class="text-sm">La función se ejecuta y devuelve un resultado.</p>
+                        </div>
+                    </div>
+                     <div class="font-bold text-2xl text-slate-400 text-center my-4">&darr;</div>
+                     <div class="p-4 bg-amber-100 rounded-lg w-full text-center">
+                        <h4 class="font-bold font-fira-code">.withSuccessHandler() / .withFailureHandler()</h4>
+                        <p class="text-sm">El cliente recibe el resultado y actualiza la UI.</p>
+                    </div>
+                </div>
+                <p class="font-bold mb-2">Ejemplo de código para `Code.gs` (Servidor):</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function obtenerSaludo(nombreUsuario) {
+  if (!nombreUsuario || nombreUsuario.trim() === '') {
+    throw new Error("El nombre no puede estar vacío.");
+  }
+  return `¡Hola, ${nombreUsuario}! Tu script te saluda desde Google Apps Script.`;
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                 <p class="font-bold mt-4 mb-2">Ejemplo de código para `saludo.html` (Cliente):</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-html">&lt;input type="text" id="nombreInput"&gt;
+&lt;button onclick="saludar()"&gt;Saludar&lt;/button&gt;
+&lt;div id="resultado"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+function saludar() {
+  let nombre = document.getElementById('nombreInput').value;
+  google.script.run
+      .withSuccessHandler(res => { document.getElementById('resultado').textContent = res; })
+      .withFailureHandler(err => { document.getElementById('resultado').textContent = 'Error: ' + err.message; })
+      .obtenerSaludo(nombre);
+}
+&lt;/script&gt;</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="font-bold mt-4 mb-2">Ejercicio Práctico: Un Lector de Productos desde la Barra Lateral.</p>
+                <p class="mb-4">Crea una barra lateral que permita al usuario buscar y mostrar detalles de productos de una hoja de cálculo, simulando la comunicación cliente-servidor.</p>
+            </div>
+
+            <!-- Lección 2.5: Despliegue de Scripts como Aplicaciones Web -->
+            <div class="card" id="leccion-2-5">
+                <h3 class="text-2xl font-bold text-slate-900 subsection-header">Lección 2.5: Despliegue de Scripts como Aplicaciones Web</h3>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">1. Concepto de una Aplicación Web Independiente de Apps Script</h4>
+                <p class="mb-4">Publica tu script como una página web accesible por URL, ideal para formularios o dashboards.</p>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">2. Los Métodos `doGet()` y `doPost()`</h4>
+                <p class="mb-4">Manejan las solicitudes HTTP GET (para mostrar páginas) y POST (para enviar datos de formularios).</p>
+                <p class="font-bold mb-2">Ejemplo de `Code.gs` para App Web:</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function doGet(e) {
+  Logger.log("GET recibido.");
+  return HtmlService.createHtmlOutputFromFile('index');
+}
+function doPost(e) {
+  Logger.log("POST recibido. Datos: " + JSON.stringify(e.parameter));
+  SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Datos").appendRow([new Date(), e.parameter.nombre]);
+  return HtmlService.createHtmlOutput('<h1>¡Gracias!</h1>');
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="font-bold mt-4 mb-2">Ejemplo de `index.html` para App Web:</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;base target="_top"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;form method="POST" action="&lt;?= ScriptApp.getService().getUrl() ?&gt;"&gt;
+    &lt;label&gt;Nombre:&lt;/label&gt;
+    &lt;input type="text" name="nombre"&gt;
+    &lt;button type="submit"&gt;Enviar&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">3. Publicando tu Script como una Aplicación Web</h4>
+                <p class="mb-4">Ve a "Desplegar" &gt; "Nueva implementación", elige "Aplicación web", configura permisos ("Ejecutar como", "Acceso a") y despliega.</p>
+                <p class="text-sm italic text-slate-600 mb-4">[Visualización: Captura de pantalla del diálogo de despliegue de Apps Script para aplicación web]</p>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">4. Manejo de Parámetros en URLs (Solicitudes GET)</h4>
+                <p class="mb-4">Accede a parámetros de URL (ej. `?id=123`) usando `e.parameter.id` en `doGet(e)`.</p>
+                <p class="font-bold mt-4 mb-2">Ejercicio Práctico: Un Micro-CMS para Anuncios.</p>
+                <p class="mb-4">Crea una aplicación web que permita publicar anuncios en una Google Sheet y verlos en otra página web.</p>
+            </div>
+
+            <!-- Lección 2.6: Manejo de Errores y Buenas Prácticas -->
+            <div class="card" id="leccion-2-6">
+                <h3 class="text-2xl font-bold text-slate-900 subsection-header">Lección 2.6: Manejo de Errores y Buenas Prácticas</h3>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">1. Bloques `try...catch`: Capturando Errores</h4>
+                <p class="mb-4">Ejecuta código de forma segura y captura excepciones.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function manejarErrores() {
+  try {
+    let resultado = 10 / 0; // Esto lanza un error en algunos contextos o si se fuerza
+    if (isNaN(resultado) || !isFinite(resultado)) throw new Error("División por cero.");
+    Logger.log("Resultado: " + resultado);
+  } catch (error) {
+    Logger.log("Error capturado: " + error.message);
+  }
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">2. Errores Comunes en Apps Script y Cómo Identificarlos</h4>
+                <p class="mb-4">`TypeError: Cannot read property '...' of null/undefined`, errores de permisos/cuotas, y errores de APIs externas.</p>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">3. Prácticas de Registro (`Logger.log()` y Stackdriver Logging)</h4>
+                <p class="mb-4">Usa `Logger.log()` para depuración rápida. Para logs más detallados y persistentes, usa `console.log()` y revisa en Google Cloud Logging.</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function demostracionLogging() {
+  console.log("Mensaje informativo.");
+  console.error("Error simulado.", new Error("Detalles del error."));
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">4. Organización del Código y Modularidad</h4>
+                <p class="mb-4">Divide tu script en múltiples archivos `.gs` para mejor organización. Puedes usar clases o funciones para agrupar funcionalidades.</p>
+                <h4 class="text-xl font-semibold mb-3 text-slate-700">5. Principios de Seguridad en Apps Script</h4>
+                <p class="mb-4">Nunca almacenes credenciales sensibles en el código (usa `PropertiesService`). Valida la entrada de usuario y sé consciente de los permisos.</p>
+                <p class="font-bold mt-4 mb-2">Ejercicio Práctico: Script con Manejo de Errores y Optimización.</p>
+                <p class="mb-4">Mejora el script de actualización de tasas de cambio con manejo de errores robusto, notificaciones por correo y optimización de llamadas a la hoja.</p>
+            </div>
+        </section>
+
+        <!-- MÓDULO 3: AUTOMATIZACIONES Y CREACIÓN DE APLICACIONES - PROYECTOS DEL MUNDO REAL -->
+        <section id="modulo-3" class="mb-20 scroll-mt-24">
+            <h2 class="text-4xl font-extrabold text-slate-900 section-header">Módulo 3: Automatizaciones y Creación de Aplicaciones - Proyectos del Mundo Real</h2>
+            <p class="text-xl leading-relaxed mb-8 text-slate-700">
+                En este módulo, aplicarás todo lo aprendido para construir soluciones completas y prácticas que resuelven problemas reales en el ámbito laboral.
+            </p>
+
+            <!-- Proyecto 1: Sistema de Gestión de Solicitudes Automatizado -->
+            <div class="card" id="proyecto-1">
+                <h3 class="text-2xl font-bold text-slate-900 subsection-header">Proyecto 1: Sistema de Gestión de Solicitudes Automatizado</h3>
+                <p class="mb-4">Automatiza la captura de solicitudes de Google Forms en una Google Sheet, generando IDs únicos y enviando confirmaciones por correo al remitente y notificaciones al equipo.</p>
+                <p class="font-bold mb-2">Paso 1: Configuración Inicial en Google Sheets y Google Forms</p>
+                <p class="mb-4">Crea una Google Sheet "Sistema de Solicitudes" con encabezados: `Marca Temporal`, `ID_Solicitud`, `Nombre_Remitente`, `Correo_Remitente`, `Tipo_Solicitud`, `Mensaje_Solicitud`, `Estado`. Vincula un Google Form con preguntas para Nombre, Correo, Tipo de Solicitud y Mensaje.</p>
+                <p class="font-bold mb-2">Paso 2: Código para Captura y Generación de ID Único (`Code.gs`)</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function procesarEnvioDeSolicitud(e) {
+  const NOMBRE_HOJA_SOLICITUDES = "Solicitudes Entrantes";
+  const CORREO_EQUIPO_NOTIFICACION = "tu_correo_de_equipo@ejemplo.com"; // ¡CAMBIA ESTO!
+  try {
+    const hojaSolicitudes = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(NOMBRE_HOJA_SOLICITUDES);
+    if (!hojaSolicitudes) throw new Error(`Hoja "${NOMBRE_HOJA_SOLICITUDES}" no encontrada.`);
+    const datosFormulario = e.namedValues;
+    const nombreRemitente = datosFormulario["Nombre Completo"][0];
+    const correoRemitente = datosFormulario["Correo Electrónico"][0];
+    const idSolicitud = generarIdUnico();
+    const filaRespuestaFormulario = e.range.getRow();
+    hojaSolicitudes.getRange(filaRespuestaFormulario, 2).setValue(idSolicitud); // Columna B
+    hojaSolicitudes.getRange(filaRespuestaFormulario, 7).setValue("Pendiente"); // Columna G
+    enviarCorreoConfirmacion(correoRemitente, nombreRemitente, idSolicitud);
+    enviarNotificacionInterna(CORREO_EQUIPO_NOTIFICACION, "Nueva Solicitud", idSolicitud, nombreRemitente, datosFormulario["Tipo de Solicitud"][0], datosFormulario["Mensaje"][0]);
+  } catch (error) {
+    console.error(`Error en procesarEnvioDeSolicitud: ${error.message}`);
+    enviarCorreoDeError(`Error Crítico`, error.message);
+  }
+}
+
+function generarIdUnico() {
+  const now = new Date();
+  const year = now.getFullYear().toString().substring(2);
+  const month = (now.getMonth() + 1).toString().padStart(2, '0');
+  const day = now.getDate().toString().padStart(2, '0');
+  const randomNum = Math.floor(Math.random() * 900) + 100;
+  return `SOL-${year}${month}${day}-${randomNum}`;
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="font-bold mt-4 mb-2">Paso 3: Código para Envío de Correos (`Code.gs`)</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function enviarCorreoConfirmacion(correo, nombre, id) {
+  GmailApp.sendEmail(correo, `Confirmación Solicitud #${id}`, `Estimado ${nombre}, hemos recibido su solicitud ${id}.`);
+}
+function enviarNotificacionInterna(correoEquipo, asunto, id, nombre, tipo, mensaje) {
+  GmailApp.sendEmail(correoEquipo, `${asunto} - ID #${id}`, `Nueva solicitud:\nID: ${id}\nNombre: ${nombre}`);
+}
+function enviarCorreoDeError(asunto, mensaje) {
+  const CORREO_ADMIN = "tu_correo_de_admin@ejemplo.com"; // ¡CAMBIA ESTO!
+  GmailApp.sendEmail(CORREO_ADMIN, `[ERROR] ${asunto}`, mensaje);
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="font-bold mt-4 mb-2">Paso 4: Configuración del Activador (`onFormSubmit` Instalable)</p>
+                <p class="mb-4">En el IDE, ve a "Activadores", "+ Añadir activador", elige `procesarEnvioDeSolicitud`, "Desde la hoja de cálculo", "Al enviar el formulario". Otorga permisos.</p>
+            </div>
+
+            <!-- Proyecto 2: Generador de Documentos Personalizados (Facturas/Certificados) -->
+            <div class="card" id="proyecto-2">
+                <h3 class="text-2xl font-bold text-slate-900 subsection-header">Proyecto 2: Generador de Documentos Personalizados (Facturas/Certificados)</h3>
+                <p class="mb-4">Automatiza la creación de documentos a partir de plantillas de Google Docs, rellenando marcadores de posición con datos de una Google Sheet.</p>
+                <p class="font-bold mb-2">Paso 1: Configuración Inicial en Google Sheets y Google Docs</p>
+                <p class="mb-4">Crea una Google Sheet "Datos Facturas" con encabezados: `ID_Factura`, `Fecha`, `Destinatario`, `Correo_Destinatario`, `Concepto`, `Monto`, `Moneda`, `Estado_Generacion`. Crea una plantilla en Google Docs (ej. "Plantilla_Factura_AppsScript") con marcadores `{{ID_FACTURA}}`, `{{FECHA}}`, etc. Anota sus IDs.</p>
+                <p class="font-bold mb-2">Paso 2: Código Principal (`Code.gs`)</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">const ID_PLANTILLA_FACTURA = "TU_ID_DE_PLANTILLA_DE_FACTURA"; // ¡CAMBIA ESTO!
+const ID_CARPETA_GENERADA = "TU_ID_DE_CARPETA_EN_DRIVE"; // ¡CAMBIA ESTO!
+const NOMBRE_HOJA_DATOS = "Datos Facturas";
+
+function generarDocumentoPersonalizado(rowIndex) {
+  try {
+    const hojaDatos = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(NOMBRE_HOJA_DATOS);
+    if (!hojaDatos) throw new Error(`Hoja "${NOMBRE_HOJA_DATOS}" no encontrada.`);
+    const datosRango = hojaDatos.getRange(1, 1, hojaDatos.getLastRow(), hojaDatos.getLastColumn()).getValues();
+    const encabezados = datosRango[0];
+    const datosFila = datosRango[rowIndex - 1];
+    const datosFactura = {};
+    encabezados.forEach((h, i) => datosFactura[h.toUpperCase()] = datosFila[i]);
+
+    const nuevoDocId = DriveApp.getFileById(ID_PLANTILLA_FACTURA).makeCopy(`Factura_${datosFactura.ID_FACTURA}`).getId();
+    const nuevoDoc = DocumentApp.openById(nuevoDocId);
+    const body = nuevoDoc.getBody();
+    body.replaceText('{{ID_FACTURA}}', datosFactura.ID_FACTURA);
+    body.replaceText('{{FECHA}}', datosFactura.FECHA);
+    // ... otros reemplazos ...
+    nuevoDoc.saveAndClose();
+
+    const archivoGenerado = DriveApp.getFileById(nuevoDocId);
+    const carpetaDestino = DriveApp.getFolderById(ID_CARPETA_GENERADA);
+    carpetaDestino.createFile(archivoGenerado.getAs(MimeType.PDF)).setName(`Factura_${datosFactura.ID_FACTURA}.pdf`);
+    archivoGenerado.setTrashed(true); // Eliminar copia temporal de Doc
+    
+    hojaDatos.getRange(rowIndex, encabezados.indexOf("Estado_Generacion") + 1).setValue("Generado");
+  } catch (error) {
+    console.error(`Error al generar documento para fila ${rowIndex}: ${error.message}`);
+    enviarCorreoDeError("Fallo en Generador de Documentos", error.message);
+  }
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="font-bold mt-4 mb-2">Paso 3: Integración y Menú Personalizado en Google Sheets (`onOpen`)</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('Generador Documentos')
+      .addItem('Generar Documento para Fila Seleccionada', 'generarDocumentoParaFilaSeleccionada')
+      .addToUi();
+}
+function generarDocumentoParaFilaSeleccionada() {
+  const ui = SpreadsheetApp.getUi();
+  const hoja = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const filaActiva = hoja.getActiveRange().getRow();
+  if (filaActiva === 1) { ui.alert('Error', 'Selecciona una fila de datos.'); return; }
+  ui.alert('Confirmar', `¿Generar para fila ${filaActiva}?`, ui.ButtonSet.YES_NO)
+    .then(btn => { if (btn === ui.Button.YES) generarDocumentoPersonalizado(filaActiva); });
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+            </div>
+
+            <!-- Proyecto 3: Dashboard de Tareas Colaborativo con Interfaz Web -->
+            <div class="card" id="proyecto-3">
+                <h3 class="text-2xl font-bold text-slate-900 subsection-header">Proyecto 3: Dashboard de Tareas Colaborativo con Interfaz Web</h3>
+                <p class="mb-4">Construye un dashboard interactivo en una aplicación web, donde los usuarios pueden gestionar tareas almacenadas en una Google Sheet.</p>
+                <p class="font-bold mb-2">Paso 1: Configuración Inicial en Google Sheets</p>
+                <p class="mb-4">Crea una Google Sheet "Dashboard de Tareas" con la hoja "Tareas" y encabezados: `ID_Tarea`, `Descripcion`, `Asignado_A`, `Fecha_Limite`, `Estado`, `Prioridad`, `Comentarios`.</p>
+                <p class="font-bold mb-2">Paso 2: Código del Lado del Servidor (`Code.gs`)</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">const NOMBRE_HOJA_TAREAS = "Tareas";
+
+function doGet(e) {
+  return HtmlService.createHtmlOutputFromFile('dashboard')
+      .addMetaTag('viewport', 'width=device-width, initial-scale=1.0')
+      .setTitle('Dashboard de Tareas');
+}
+
+function obtenerTodasLasTareas() {
+  const hoja = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(NOMBRE_HOJA_TAREAS);
+  if (!hoja) throw new Error(`Hoja "${NOMBRE_HOJA_TAREAS}" no encontrada.`);
+  const valores = hoja.getDataRange().getValues();
+  if (valores.length <= 1) return [];
+  const encabezados = valores[0];
+  const tareas = [];
+  for (let i = 1; i < valores.length; i++) {
+    const tarea = {};
+    encabezados.forEach((h, idx) => {
+      const clave = h.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
+      tarea[clave] = valores[i][idx];
+    });
+    tareas.push(tarea);
+  }
+  return tareas;
+}
+
+function añadirNuevaTarea(nuevaTarea) {
+  const hoja = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(NOMBRE_HOJA_TAREAS);
+  if (!hoja) throw new Error(`Hoja "${NOMBRE_HOJA_TAREAS}" no encontrada.`);
+  nuevaTarea.id_tarea = generarIdTarea();
+  nuevaTarea.estado = nuevaTarea.estado || "Pendiente";
+  const encabezados = hoja.getRange(1, 1, 1, hoja.getLastColumn()).getValues()[0];
+  const filaParaAñadir = encabezados.map(header => {
+    const clave = header.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
+    return nuevaTarea[clave] || '';
+  });
+  hoja.appendRow(filaParaAñadir);
+  return nuevaTarea;
+}
+
+function actualizarTarea(tareaActualizada) {
+  const hoja = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(NOMBRE_HOJA_TAREAS);
+  if (!hoja) throw new Error(`Hoja "${NOMBRE_HOJA_TAREAS}" no encontrada.`);
+  const valores = hoja.getDataRange().getValues();
+  const encabezados = valores[0];
+  const idTareaColIndex = encabezados.indexOf("ID_Tarea");
+  let filaEncontrada = -1;
+  for (let i = 1; i < valores.length; i++) {
+    if (valores[i][idTareaColIndex] === tareaActualizada.id_tarea) {
+      filaEncontrada = i; break;
+    }
+  }
+  if (filaEncontrada === -1) throw new Error(`Tarea con ID ${tareaActualizada.id_tarea} no encontrada.`);
+  const filaValores = valores[filaEncontrada];
+  for (const key in tareaActualizada) {
+    const headerName = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    const colIndex = encabezados.indexOf(headerName);
+    if (colIndex !== -1) filaValores[colIndex] = tareaActualizada[key];
+  }
+  hoja.getRange(filaEncontrada + 1, 1, 1, filaValores.length).setValues([filaValores]);
+  return tareaActualizada;
+}
+
+function generarIdTarea() {
+  const datePart = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyMMdd");
+  const randomPart = Math.floor(100 + Math.random() * 900);
+  return `T-${datePart}-${randomPart}`;
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="font-bold mt-4 mb-2">Paso 3: Interfaz de Usuario (`dashboard.html`)</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;base target="_top"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Dashboard de Tareas&lt;/title&gt;
+  &lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;
+  &lt;link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"&gt;
+  &lt;style&gt;/* Estilos de la aplicación */&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="container-custom"&gt;
+    &lt;h1 class="text-3xl font-bold text-slate-800 text-center mb-6"&gt;Dashboard de Tareas del Equipo&lt;/h1&gt;
+    &lt;div class="flex flex-col sm:flex-row justify-between items-center mb-6 space-y-4 sm:space-y-0 sm:space-x-4"&gt;
+      &lt;!-- Filtros y botón Añadir Tarea --&gt;
+    &lt;/div&gt;
+    &lt;div id="tasksContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"&gt;
+      &lt;p class="col-span-full text-center text-slate-500"&gt;Cargando tareas...&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;!-- MODAL para Añadir/Editar Tarea --&gt;
+  &lt;/div&gt;
+  &lt;script&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const tasksContainer = document.getElementById('tasksContainer');
+        let allTasks = []; // Almacenará todas las tareas
+
+        function getStatusClass(status) { /* ... */ }
+        function getPriorityClass(priority) { /* ... */ }
+
+        function renderTasks(tasksToDisplay) {
+            tasksContainer.innerHTML = '';
+            if (tasksToDisplay.length === 0) tasksContainer.innerHTML = '&lt;p&gt;No hay tareas.&lt;/p&gt;';
+            tasksToDisplay.forEach(task => {
+                const taskCard = document.createElement('div');
+                taskCard.className = `task-card ${getStatusClass(task.estado)}`;
+                taskCard.innerHTML = `&lt;h3&gt;${task.descripcion}&lt;/h3&gt;`; // Contenido de la tarjeta
+                tasksContainer.appendChild(taskCard);
+            });
+        }
+
+        function loadTasks() {
+            google.script.run
+                .withSuccessHandler(function(tasks) { allTasks = tasks; renderTasks(allTasks); })
+                .withFailureHandler(function(error) { tasksContainer.innerHTML = `Error: ${error.message}`; })
+                .obtenerTodasLasTareas();
+        }
+        // ... Lógica para modal y formularios (añadir/editar) ...
+        loadTasks();
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="font-bold mt-4 mb-2">Paso 4: Despliegue de la Aplicación Web</p>
+                <p class="mb-4">Despliega el script como una "Aplicación web" desde el IDE. Configura "Ejecutar como: Yo" y "Acceso a: Cualquier persona con cuenta de Google" o "Solo yo".</p>
+            </div>
+
+            <!-- Proyecto 4: Herramienta de Limpieza y Organización de Google Drive -->
+            <div class="card" id="proyecto-4">
+                <h3 class="text-2xl font-bold text-slate-900 subsection-header">Proyecto 4: Herramienta de Limpieza y Organización de Google Drive</h3>
+                <p class="mb-4">Automatiza la gestión de archivos en tu Google Drive: eliminar archivos vacíos, organizar por tipo y archivar documentos antiguos.</p>
+                <p class="font-bold mb-2">Paso 1: Escenario y Objetivo</p>
+                <p class="mb-4">Objetivo: Eliminar archivos vacíos, organizar por tipo (PDFs, imágenes, etc.) y archivar archivos no modificados recientemente. **¡Importante: Siempre prueba con datos de prueba!**</p>
+                <p class="font-bold mb-2">Paso 2: Código Principal (`Code.gs`)</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">const ID_CARPETA_ARCHIVO = "TU_ID_DE_CARPETA_DE_ARCHIVO"; // ¡CAMBIA ESTO!
+const DIAS_ANTIGUEDAD_ARCHIVO = 365;
+const CARPETAS_POR_TIPO = {
+  'application/pdf': 'Documentos_PDF',
+  'image/jpeg': 'Imagenes'
+};
+
+function eliminarArchivosVacios() {
+  Logger.log("Eliminando archivos vacíos...");
+  DriveApp.getFiles().forEachRemaining(archivo => {
+    if (archivo.getSize() === 0) {
+      archivo.setTrashed(true);
+      Logger.log(`Eliminado: ${archivo.getName()}`);
+    }
+  });
+}
+
+function organizarArchivosPorTipo() {
+  Logger.log("Organizando archivos por tipo...");
+  DriveApp.getFiles().forEachRemaining(archivo => {
+    const mimeType = archivo.getMimeType();
+    const nombreCarpeta = CARPETAS_POR_TIPO[mimeType];
+    if (nombreCarpeta) {
+      let carpeta = DriveApp.getFoldersByName(nombreCarpeta).next();
+      if (!carpeta) carpeta = DriveApp.createFolder(nombreCarpeta);
+      // Eliminar de padres actuales y añadir a la nueva
+      archivo.getParents().forEachRemaining(p => p.removeFile(archivo));
+      carpeta.addFile(archivo);
+      Logger.log(`Movido: ${archivo.getName()} a ${nombreCarpeta}`);
+    }
+  });
+}
+
+function archivarArchivosAntiguos() {
+  Logger.log("Archivando archivos antiguos...");
+  const carpetaArchivo = DriveApp.getFolderById(ID_CARPETA_ARCHIVO);
+  const fechaLimite = new Date();
+  fechaLimite.setDate(fechaLimite.getDate() - DIAS_ANTIGUEDAD_ARCHIVO);
+  DriveApp.getFiles().forEachRemaining(archivo => {
+    if (archivo.getLastUpdated() < fechaLimite && archivo.getSize() > 0) {
+      // Eliminar de padres actuales y añadir a la de archivo
+      archivo.getParents().forEachRemaining(p => p.removeFile(archivo));
+      carpetaArchivo.addFile(archivo);
+      Logger.log(`Archivado: ${archivo.getName()}`);
+    }
+  });
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="font-bold mt-4 mb-2">Paso 3: Integración y Menú Personalizado en Google Sheets (`onOpen`)</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('Herramientas Drive')
+      .addItem('Limpiar: Eliminar Archivos Vacíos', 'eliminarArchivosVacios')
+      .addItem('Limpiar: Organizar Archivos por Tipo', 'organizarArchivosPorTipo')
+      .addItem('Limpiar: Archivar Archivos Antiguos', 'archivarArchivosAntiguos')
+      .addSeparator()
+      .addItem('Ejecutar Todas las Limpiezas', 'ejecutarTodasLasLimpiezas')
+      .addToUi();
+}
+function ejecutarTodasLasLimpiezas() {
+  const ui = SpreadsheetApp.getUi();
+  ui.alert('Confirmación', '¿Seguro que quieres ejecutar TODAS las limpiezas? Puede mover y eliminar.', ui.ButtonSet.YES_NO)
+    .then(btn => { if (btn === ui.Button.YES) { eliminarArchivosVacios(); organizarArchivosPorTipo(); archivarArchivosAntiguos(); } });
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="font-bold mt-4 mb-2">Paso 4: Configuración del Activador (Opcional - Time-driven trigger)</p>
+                <p class="mb-4">Configura un activador basado en tiempo (ej. mensual) para `ejecutarTodasLasLimpiezas` desde el IDE de Apps Script.</p>
+            </div>
+
+            <!-- Proyecto 5: Integración con una API de SMS/WhatsApp (Ejemplo Conceptual) -->
+            <div class="card" id="proyecto-5">
+                <h3 class="text-2xl font-bold text-slate-900 subsection-header">Proyecto 5: Integración con una API de SMS/WhatsApp (Ejemplo Conceptual)</h3>
+                <p class="mb-4">Aprende a conectar tus scripts con servicios de mensajería externos (SMS/WhatsApp) usando `UrlFetchApp`. Este es un **ejemplo conceptual**.</p>
+                <p class="font-bold mb-2">Paso 1: Entendiendo la Interacción con APIs de Mensajería</p>
+                <p class="mb-4">Implica: URL del Endpoint, Método HTTP (POST), Encabezados (API Key), Cuerpo de la Solicitud (Número, Mensaje).</p>
+                <p class="font-bold mb-2">Paso 2: Configuración Inicial en Google Sheets (Opcional)</p>
+                <p class="mb-4">Crea una Google Sheet "Sistema de Notificaciones SMS" con encabezados: `Nombre`, `Numero_Telefono`, `ID_Solicitud`, `Estado_Notificacion`.</p>
+                <p class="font-bold mb-2">Paso 3: Código Principal (`Code.gs`)</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">const SMS_API_URL = "https://api.example.com/v1/send-message"; // URL conceptual
+const API_KEY_PROPERTY_NAME = "MESSAGING_API_KEY";
+const NUMERO_ORIGEN_SMS = "+15017122661"; // Ejemplo
+
+function enviarMensajeSMS(numeroDestino, mensajeTexto) {
+  try {
+    const apiKey = PropertiesService.getScriptProperties().getProperty(API_KEY_PROPERTY_NAME);
+    if (!apiKey) throw new Error(`API Key '${API_KEY_PROPERTY_NAME}' no configurada.`);
+    const payloadData = { to: numeroDestino, body: mensajeTexto, from: NUMERO_ORIGEN_SMS };
+    const options = {
+      method: 'post', contentType: 'application/json',
+      headers: { 'Authorization': `Bearer ${apiKey}` },
+      payload: JSON.stringify(payloadData), muteHttpExceptions: true
+    };
+    const response = UrlFetchApp.fetch(SMS_API_URL, options);
+    const responseCode = response.getResponseCode();
+    const responseText = response.getContentText();
+    Logger.log(`API Response: ${responseCode}, ${responseText}`);
+    if (responseCode &lt; 200 || responseCode &gt;= 300) throw new Error(`Error API: ${responseCode}, ${responseText}`);
+    Logger.log(`Mensaje enviado a ${numeroDestino}.`);
+  } catch (error) {
+    console.error(`Error en enviarMensajeSMS: ${error.message}`);
+    enviarCorreoDeError(`Fallo crítico envío SMS/WhatsApp`, error.message);
+    throw error;
+  }
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="font-bold mt-4 mb-2">Paso 4: Integración con un Evento (Ejemplo `onEdit`)</p>
+                <div class="code-block">
+                    <pre class="code-pre"><code class="language-javascript">const NOMBRE_HOJA_CONTACTOS = "Contactos";
+
+function notificarPorSMSAlEditar(e) {
+  const hoja = e.range.getSheet();
+  const nombreHoja = hoja.getName();
+  const fila = e.range.getRow();
+  const columna = e.range.getColumn();
+  const nuevoValor = e.value;
+
+  if (nombreHoja === NOMBRE_HOJA_CONTACTOS && columna === 4 && nuevoValor === "Listo para Notificar") {
+    const datosFila = hoja.getRange(fila, 1, 1, hoja.getLastColumn()).getValues()[0];
+    const nombreContacto = datosFila[0];
+    const numeroContacto = datosFila[1];
+    const idSolicitud = datosFila[2];
+    if (numeroContacto && numeroContacto.length > 5) {
+      const mensaje = `Hola ${nombreContacto}, tu solicitud ${idSolicitud} ha sido procesada.`;
+      try {
+        enviarMensajeSMS(numeroContacto, mensaje);
+        hoja.getRange(fila, columna).setValue("Notificado por SMS");
+      } catch (smsError) {
+        hoja.getRange(fila, columna).setValue("ERROR al Notificar");
+      }
+    } else {
+      hoja.getRange(fila, columna).setValue("ERROR: Sin Teléfono");
+    }
+  }
+}</code></pre>
+                    <button class="copy-button"><i class="far fa-copy"></i> Copiar</button>
+                </div>
+                <p class="font-bold mt-4 mb-2">Paso 5: Configuración del Activador (Instalable) y la API Key</p>
+                <p class="mb-4">Guarda tu API Key en Propiedades del Script (`MESSAGING_API_KEY`). Crea un activador "Al editar" para `notificarPorSMSAlEditar` y otorga permisos.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center py-8 mt-16 border-t border-slate-200 bg-white shadow-inner">
+        <p class="text-slate-500 text-sm">Curso de Google Apps Script. ¡Esperamos que te sea de gran utilidad!</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const allCopyButtons = document.querySelectorAll('.copy-button');
+            allCopyButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    const pre = event.target.previousElementSibling;
+                    const code = pre.querySelector('code');
+                    const text = code.innerText;
+
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                        event.target.innerHTML = '&check; Copiado!'; // Check icon for success
+                    } catch (err) {
+                        event.target.innerHTML = '&#x2717; Error'; // X icon for error
+                        console.error('Error al copiar', err);
+                    }
+                    document.body.removeChild(textArea);
+                    
+                    setTimeout(() => {
+                        event.target.innerHTML = '<i class="far fa-copy"></i> Copiar';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
